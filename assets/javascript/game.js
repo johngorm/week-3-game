@@ -1,22 +1,48 @@
 
+function pickSolution() {
+	var index = Math.floor(Math.random()*(solutionBank.length) - 1);
+	return solutionBank[index];
+}
 
-var solutionBank = ["mario", "sonic", "link", "ness", "samus", "jigglypuff", "yoshi", "zelda", "pokeball", "marth" ];
+
+var solutionBank = ["mario", "sonic", "link", "ness", "samus", "jigglypuff", "yoshi", "zelda", "pokeball", "marth", 
+		"ganon", "pikachu" , ];
 var displayedSolution = []; /*array of blanks that is same size as solution,
 						will reveal letters with correct guesses*/ 
 var solution;
 var guessedLetters = []; /*array*/
-var wins;
+var wins = 0;
 var guessRemain = 10;
 
-solution = solutionBank[0];
+solution = pickSolution();
+
 var split_solution = solution.split("");
 for(var i = 0; i < solution.length; i++)
 {
 	displayedSolution[i] = "-";
 }
 
+var solution_space = document.getElementById("solution");
 
-document.write("Press any key to get started!");
+solution_space.innerHTML = displayedSolution.join('');
+
+function resetGame () {
+	console.log("foo");
+	guessRemain = 10;
+	wins = 0;
+	solution = pickSolution();
+	guessedLetters = [];
+	displayedSolution = [];
+	for(var i = 0; i < solution.length; i++)
+	{
+		displayedSolution[i] = "-";
+	}
+	solution_space.innerHTML = displayedSolution.join('');
+
+	split_solution = solution.split("");
+
+};
+
 
 document.onkeyup = function(){
 
@@ -30,7 +56,6 @@ document.onkeyup = function(){
 
 		if(guessedLetters[ii] == userguess){
 			isOldGuess= true;
-			console.log("old gues");
 			break;
 
 		}
@@ -46,36 +71,38 @@ document.onkeyup = function(){
 
 				isGuessInSol = true;
 				displayedSolution[jj] = userguess;
-				console.log("display: " + displayedSolution[jj])
+				console.log(displayedSolution);
 			}
 		}
 
 		if(isGuessInSol){
 			displayedSolution[char_position] = userguess;
-			console.log("solution update");
+			solution_space.innerHTML = displayedSolution.join('');
 			/*check to see if word is complete*/
-			if(displayedSolution === split_solution){
+			console
+			if(displayedSolution.toString() === split_solution.toString()){
 				/*win state*/
 				console.log("Win");
+				wins++;
 				return;
 			}
 			else{
-				console.log("dipslay"  + displayedSolution);
-				console.log("split: " + split_solution);
-				console.log("guessedLetters: " + guessedLetters)
-				console.log("Continue");
+				
+				console.log("split: " + split_solution + " " + split_solution.length);
+				console.log("Correct");
 
 			}
 		}
 		else{
-			guessRemain--;
-			
 			console.log("Wrong guess");
-
+			if(guessRemain == 1){
+				console.log("You lose");
+				return;
+			}
+			guessRemain--;
 
 		}
 		guessedLetters.push(userguess);
-
+		
 	}
-
 };
