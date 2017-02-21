@@ -4,9 +4,8 @@ function pickSolution() {
 	return solutionBank[index];
 }
 
-
 var solutionBank = ["mario", "sonic", "link", "ness", "samus", "jigglypuff", "yoshi", "zelda", "pokeball", "marth", 
-		"ganon", "pikachu" , ];
+		"ganon", "pikachu" , "bowser", "fox", "wario" ];
 var displayedSolution = []; /*array of blanks that is same size as solution,
 						will reveal letters with correct guesses*/ 
 var solution;
@@ -22,9 +21,20 @@ for(var i = 0; i < solution.length; i++)
 	displayedSolution[i] = "-";
 }
 
-var solution_space = document.getElementById("solution");
+updateScreen();
+/*var solution_space = document.getElementById("solution");
 
 solution_space.innerHTML = displayedSolution.join('');
+
+document.getElementById("remaining_guesses").innerHTML = guessRemain;*/
+
+function updateScreen(){
+	document.getElementById("guessed_letters").innerHTML =  guessedLetters.toString() ;
+	document.getElementById("remaining_guesses").innerHTML =  guessRemain ;
+	document.getElementById("win_counter").innerHTML = "Wins: " + wins; 
+	document.getElementById("solution").innerHTML = displayedSolution.join('');
+}
+
 
 function resetGame () {
 	console.log("foo");
@@ -37,11 +47,12 @@ function resetGame () {
 	{
 		displayedSolution[i] = "-";
 	}
-	solution_space.innerHTML = displayedSolution.join('');
+	updateScreen();
 
 	split_solution = solution.split("");
 
 };
+
 
 
 document.onkeyup = function(){
@@ -77,13 +88,14 @@ document.onkeyup = function(){
 
 		if(isGuessInSol){
 			displayedSolution[char_position] = userguess;
-			solution_space.innerHTML = displayedSolution.join('');
+			/*solution_space.innerHTML = displayedSolution.join('');
 			/*check to see if word is complete*/
-			console
+			updateScreen();
 			if(displayedSolution.toString() === split_solution.toString()){
 				/*win state*/
 				console.log("Win");
 				wins++;
+				document.getElementById("win_counter").innerHTML = "Wins: " + wins;
 				return;
 			}
 			else{
@@ -95,14 +107,20 @@ document.onkeyup = function(){
 		}
 		else{
 			console.log("Wrong guess");
+
 			if(guessRemain == 1){
 				console.log("You lose");
+				wins--;
+				document.getElementById("win_counter").innerHTML = "Wins: " + wins;
 				return;
 			}
 			guessRemain--;
+			document.getElementById("guessed_letters").innerHTMl = document.getElementById("guessed_letters").innerHTML + userguess;
+			document.getElementById("remaining_guesses").innerHTML = guessRemain;
 
 		}
 		guessedLetters.push(userguess);
+		
 		
 	}
 };

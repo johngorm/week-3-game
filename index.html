@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Musical Theater Hangman</title>
+	<title>Super Smash Bros Hangman</title>
 </head>
 <body>
 <header>
 	<div class="game_title">
 		<h1>Hangman</h1>
 	</div>
+	<div class="game_subtitle"> Super Smash Bros </div>
 </header>
-
-<div> Smash Bros Hangman </div>
-
-
 <div>
+	<img src="./assets/images/nintendo.gif">
+</div>
+<div>
+	<p>Press any key to get started!</p>
+</div>
+<div>
+	<p id="win_counter"></p>
+</div>
+<div>
+	<p>Current Word</p>
 	<p id="solution"></p>
 </div>
 
+<div>
+	<p>Number of Guesses Remaining</p>
+	<p id="remaining_guesses"></p>
+</div>
 
+<div>
+	<p>Letters Already Guessed</p>
+	<p id="guessed_letters"></p>
+</div>
+
+<br>
+<br>
 <button type="button" onclick="resetGame()">Reset</button>
 
 
