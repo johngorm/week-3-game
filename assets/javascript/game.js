@@ -10,6 +10,7 @@ var displayedSolution = []; /*array of blanks that is same size as solution,
 						will reveal letters with correct guesses*/ 
 var solution;
 var guessedLetters = []; /*array*/
+var incorrectGuesses = [];
 var wins = 0;
 var guessRemain = 10;
 
@@ -29,7 +30,7 @@ solution_space.innerHTML = displayedSolution.join('');
 document.getElementById("remaining_guesses").innerHTML = guessRemain;*/
 
 function updateScreen(){
-	document.getElementById("guessed_letters").innerHTML =  guessedLetters.toString() ;
+	document.getElementById("incorrect_letters").innerHTML =  incorrectGuesses.toString() ;
 	document.getElementById("remaining_guesses").innerHTML =  guessRemain ;
 	document.getElementById("win_counter").innerHTML = "Wins: " + wins; 
 	document.getElementById("solution").innerHTML = displayedSolution.join('');
@@ -42,6 +43,7 @@ function resetGame () {
 	wins = 0;
 	solution = pickSolution();
 	guessedLetters = [];
+	incorrectGuesses = [];
 	displayedSolution = [];
 	for(var i = 0; i < solution.length; i++)
 	{
@@ -107,7 +109,7 @@ document.onkeyup = function(){
 		}
 		else{
 			console.log("Wrong guess");
-
+			incorrectGuesses.push(userguess);
 			if(guessRemain == 1){
 				console.log("You lose");
 				wins--;
@@ -115,11 +117,13 @@ document.onkeyup = function(){
 				return;
 			}
 			guessRemain--;
-			document.getElementById("guessed_letters").innerHTMl = document.getElementById("guessed_letters").innerHTML + userguess;
-			document.getElementById("remaining_guesses").innerHTML = guessRemain;
+			console.log("Update guessed letters");
+			
+			
 
 		}
 		guessedLetters.push(userguess);
+		updateScreen();
 		
 		
 	}
