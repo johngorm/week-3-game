@@ -9,12 +9,14 @@ var game = {
 		this.solution = this.solutionBank[index];
 	},
 	guessedLetters: [],
-
+	solution: [],
 	incorrectGuesses: [],
 	wins: 0,
-	guessRemain: 10
+	guessRemain: 10,
+	isDone : false
 };
 
+game.pickSolution();
 
 
 function updateScreen(){
@@ -42,7 +44,19 @@ function resetGame () {
 
 };
 
-game.pickSolution();
+function getNewSolution(){
+	game.guessRemain = 10;
+	game.guessedLetters = [];
+	game.incorrectGuesses = [];
+	game.pickSolution();
+	game.displayedSolution = [];
+	for(var i = 0; i < game.solution.length; i++)
+	{
+		game.displayedSolution[i] = "-";
+	}
+	updateScreen();
+}
+
 
 for(var i = 0; i < game.solution.length; i++)
 {
@@ -60,57 +74,70 @@ document.onkeyup = function(){
 	var isGuessInSol = false; 
 	var isOldGuess = false;
 	/*test keystroke to see if it already was pressed*/
-
-	for(var ii = 0; ii < game.guessedLetters.length; ii++){
-
-		if(game.guessedLetters[ii] == userguess){
-			isOldGuess= true;
-			break;
-
-		}
-
-	}
-	if(!isOldGuess){
-
-
-		for(var jj = 0; jj < game.solution.length; jj++){
+	if(game.isDone){
+		getNewSolution();
+		game.isDone = false;
 		
-			if(game.solution[jj] == userguess)
-			{
-				isGuessInSol = true;
-				game.displayedSolution[jj] = userguess;
-				console.log(game.displayedSolution);
-			}
-		}
+	}
+	else{
+		for(var ii = 0; ii < game.guessedLetters.length; ii++){
 
-		if(isGuessInSol){
-			game.displayedSolution[char_position] = userguess;
+			if(game.guessedLetters[ii] == userguess){
+				isOldGuess= true;
+				break;
+
+			}
+
+		}
+		if(!isOldGuess){
+
+
+			for(var jj = 0; jj < game.solution.length; jj++){
 			
-			/*check to see if word is complete*/
-			
-			if(game.displayedSolution.join('') === game.solution.toString()){
-				/*win state*/
-				console.log("Win");
-				game.wins++;
-				updateScreen();
+				if(game.solution[jj] == userguess)
+				{
+					isGuessInSol = true;
+					game.displayedSolution[jj] = userguess;
+					console.log(game.displayedSolution);
+				}
+			}
+
+			if(isGuessInSol){
+				game.displayedSolution[char_position] = userguess;
 				
-				return;
+				/*check to see if word is complete*/
+				
+				if(game.displayedSolution.join('') === game.solution.toString()){
+					/*win state*/
+					console.log("Win");
+					game.wins++;
+					game.isDone = true;
+					updateScreen();
+					//getNewSolution();
+					
+					return;
+				}
 			}
-		}
-		else{
-			console.log("Wrong guess");
-			game.incorrectGuesses.push(userguess);
-			if(game.guessRemain == 1){
-				console.log("You lose");
-				game.wins--;
-				return;
+			else{
+				console.log("Wrong guess");
+				game.incorrectGuesses.push(userguess);
+				game.guessRemain--;
+				if(game.guessRemain == 0){
+
+					console.log("You lose");
+					game.wins--;
+					game.isDone = true;
+					updateScreen();
+					//getNewSolution();
+					return;
+				}
+				
+				console.log("Update guessed letters");
+				
 			}
-			game.guessRemain--;
-			console.log("Update guessed letters");
-			
+			game.guessedLetters.push(userguess);
+			updateScreen();
+				
 		}
-		game.guessedLetters.push(userguess);
-		updateScreen();
-			
 	}
 };
