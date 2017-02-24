@@ -58,7 +58,6 @@ function getNewSolution(){
 	{
 		game.displayedSolution[i] = "-";
 	}
-	//updateScreen();
 	document.getElementById("incorrect_letters").innerHTML =  game.incorrectGuesses.toString() ;
 	document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
 	document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
@@ -121,9 +120,6 @@ document.onkeyup = function(){
 					game.isDone = true;
 					document.getElementById("win_counter").innerHTML = "Wins: " + game.wins;
 					document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
-
-					//getNewSolution();
-					
 					return;
 				}
 			}
@@ -136,10 +132,8 @@ document.onkeyup = function(){
 					console.log("You lose");
 					game.losses++;
 					game.isDone = true;
-					//updateScreen();
 					document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
 					document.getElementById("loss_counter").innerHTML = "Losses: " + game.losses;
-					//getNewSolution();
 					return;
 				}
 				
