@@ -1,6 +1,6 @@
 
 var solutionBank = ["mario", "sonic", "link", "ness", "samus", "jigglypuff", "yoshi", "zelda", "pokeball", "marth", 
-		"ganon", "pikachu" , "bowser", "fox", "wario", "olimar"];
+		"ganondorf", "pikachu" , "bowser", "fox", "wario", "olimar"];
 
 var game = {
 
@@ -58,7 +58,10 @@ function getNewSolution(){
 	{
 		game.displayedSolution[i] = "-";
 	}
-	updateScreen();
+	//updateScreen();
+	document.getElementById("incorrect_letters").innerHTML =  game.incorrectGuesses.toString() ;
+	document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
+	document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
 }
 
 game.pickSolution();
@@ -114,10 +117,8 @@ document.onkeyup = function(){
 				
 				if(game.displayedSolution.join('') === game.solution.toString()){
 					/*win state*/
-					console.log("Win");
 					game.wins++;
 					game.isDone = true;
-					//updateScreen();
 					document.getElementById("win_counter").innerHTML = "Wins: " + game.wins;
 					document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
 
@@ -136,6 +137,7 @@ document.onkeyup = function(){
 					game.losses++;
 					game.isDone = true;
 					//updateScreen();
+					document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
 					document.getElementById("loss_counter").innerHTML = "Losses: " + game.losses;
 					//getNewSolution();
 					return;
