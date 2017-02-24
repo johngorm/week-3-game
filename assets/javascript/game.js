@@ -1,29 +1,31 @@
 
+var solutionBank = ["mario", "sonic", "link", "ness", "samus", "jigglypuff", "yoshi", "zelda", "pokeball", "marth", 
+		"ganon", "pikachu" , "bowser", "fox", "wario", "olimar"];
+
 var game = {
-	solutionBank : ["mario", "sonic", "link", "ness", "samus", "jigglypuff", "yoshi", "zelda", "pokeball", "marth", 
-		"ganon", "pikachu" , "bowser", "fox", "wario" ],
+
 	displayedSolution : [],
 	
 	pickSolution : function() {
-		var index = Math.floor(Math.random()*(this.solutionBank.length) - 1);
-		this.solution = this.solutionBank[index];
+		var index = Math.floor(Math.random()*(solutionBank.length) - 1);
+		this.solution = solutionBank[index];
 	},
+	gameSolution : solutionBank[Math.floor(Math.random()*(solutionBank.length) - 1)],
 	guessedLetters: [],
-	solution: [],
+	solution:[],
 	incorrectGuesses: [],
 	wins: 0,
 	guessRemain: 10,
 	isDone : false
 };
 
-game.pickSolution();
 
 
 function updateScreen(){
 	document.getElementById("incorrect_letters").innerHTML =  game.incorrectGuesses.toString() ;
-	document.getElementById("remaining_guesses").innerHTML =  game.guessRemain ;
+	document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
 	document.getElementById("win_counter").innerHTML = "Wins: " + game.wins; 
-	document.getElementById("solution").innerHTML = game.displayedSolution.join('');
+	document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
 }
 
 
@@ -35,7 +37,7 @@ function resetGame () {
 	game.guessedLetters = [];
 	game.incorrectGuesses = [];
 	game.displayedSolution = [];
-	for(var i = 0; i < solution.length; i++)
+	for(var i = 0; i < game.solution.length; i++)
 	{
 		game.displayedSolution[i] = "-";
 	}
@@ -57,6 +59,7 @@ function getNewSolution(){
 	updateScreen();
 }
 
+game.pickSolution();
 
 for(var i = 0; i < game.solution.length; i++)
 {
@@ -112,18 +115,21 @@ document.onkeyup = function(){
 					console.log("Win");
 					game.wins++;
 					game.isDone = true;
-					updateScreen();
+					//updateScreen();
+					document.getElementById("win_counter").innerHTML = "Wins: " + game.wins;
+					document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
+
 					//getNewSolution();
 					
 					return;
 				}
 			}
-			else{
+			else{ 
 				console.log("Wrong guess");
 				game.incorrectGuesses.push(userguess);
 				game.guessRemain--;
 				if(game.guessRemain == 0){
-
+					/*Lose state*/
 					console.log("You lose");
 					game.wins--;
 					game.isDone = true;
