@@ -15,6 +15,7 @@ var game = {
 	solution:[],
 	incorrectGuesses: [],
 	wins: 0,
+	losses:0,
 	guessRemain: 10,
 	isDone : false
 };
@@ -25,14 +26,15 @@ function updateScreen(){
 	document.getElementById("incorrect_letters").innerHTML =  game.incorrectGuesses.toString() ;
 	document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
 	document.getElementById("win_counter").innerHTML = "Wins: " + game.wins; 
+	document.getElementById("loss_counter").innerHTML = "Losses: " + game.losses;
 	document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
 }
 
 
 function resetGame () {
-	console.log("foo");
 	game.guessRemain = 10;
 	game.wins = 0;
+	game.losses = 0;
 	game.pickSolution();
 	game.guessedLetters = [];
 	game.incorrectGuesses = [];
@@ -131,9 +133,10 @@ document.onkeyup = function(){
 				if(game.guessRemain == 0){
 					/*Lose state*/
 					console.log("You lose");
-					game.wins--;
+					game.losses++;
 					game.isDone = true;
-					updateScreen();
+					//updateScreen();
+					document.getElementById("loss_counter").innerHTML = "Losses: " + game.losses;
 					//getNewSolution();
 					return;
 				}

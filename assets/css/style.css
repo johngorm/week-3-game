@@ -33,5 +33,9 @@ p{
 
 
 .space_row{
-	height: 50px;
+	height: 65px;
+}
+
+.btn-warning {
+	padding-bottom: 40px;
 }
