@@ -7,10 +7,10 @@ var game = {
 	displayedSolution : [],
 	
 	pickSolution : function() {
-		var index = Math.floor(Math.random()*(solutionBank.length) - 1);
+		var index = Math.floor(Math.random()*(solutionBank.length-1));
 		this.solution = solutionBank[index];
 	},
-	gameSolution : solutionBank[Math.floor(Math.random()*(solutionBank.length) - 1)],
+	gameSolution : solutionBank[Math.floor(Math.random())],
 	guessedLetters: [],
 	solution:[],
 	incorrectGuesses: [],
@@ -74,7 +74,7 @@ updateScreen();
 
 
 
-document.onkeyup = function(){
+document.onkeyup = function(event){
 
 	var userguess = event.key;
 	var char_position;
