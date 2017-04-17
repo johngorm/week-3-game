@@ -2,12 +2,13 @@
 var solutionBank = ["mario", "sonic", "link", "ness", "samus", "jigglypuff", "yoshi", "zelda", "pokeball", "marth", 
 		"ganondorf", "pikachu" , "bowser", "fox", "wario", "olimar"];
 
+
 var game = {
 
 	displayedSolution : [],
 	
 	pickSolution : function() {
-		var index = Math.floor(Math.random()*(solutionBank.length-1));
+		var index = Math.floor(Math.random()*(solutionBank.length));
 		this.solution = solutionBank[index];
 	},
 	gameSolution : solutionBank[Math.floor(Math.random())],
@@ -75,74 +76,73 @@ updateScreen();
 
 
 document.onkeyup = function(event){
-
-	var userguess = event.key;
-	var char_position;
-	var isGuessInSol = false; 
-	var isOldGuess = false;
-	/*test keystroke to see if it already was pressed*/
-	if(game.isDone){
-		getNewSolution();
-		game.isDone = false;
-		
-	}
-	else{
-		for(var ii = 0; ii < game.guessedLetters.length; ii++){
-
-			if(game.guessedLetters[ii] == userguess){
-				isOldGuess= true;
-				break;
-
-			}
-
-		}
-		if(!isOldGuess){
-
-
-			for(var jj = 0; jj < game.solution.length; jj++){
+	if(event.which >= 65 && event.which <= 90){
+		var userguess = event.key;
+		var char_position;
+		var isGuessInSol = false; 
+		var isOldGuess = false;
+		/*test keystroke to see if it already was pressed*/
+		if(game.isDone){
+			getNewSolution();
+			game.isDone = false;
 			
-				if(game.solution[jj] == userguess)
-				{
-					isGuessInSol = true;
-					game.displayedSolution[jj] = userguess;
-					console.log(game.displayedSolution);
-				}
-			}
+		}
+		else{
+			for(var ii = 0; ii < game.guessedLetters.length; ii++){
 
-			if(isGuessInSol){
-				game.displayedSolution[char_position] = userguess;
-				
-				/*check to see if word is complete*/
-				
-				if(game.displayedSolution.join('') === game.solution.toString()){
-					/*win state*/
-					game.wins++;
-					game.isDone = true;
-					document.getElementById("win_counter").innerHTML = "Wins: " + game.wins;
-					document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
-					return;
+				if(game.guessedLetters[ii] == userguess){
+					isOldGuess= true;
+					break;
+
 				}
+
 			}
-			else{ 
-				console.log("Wrong guess");
-				game.incorrectGuesses.push(userguess);
-				game.guessRemain--;
-				if(game.guessRemain == 0){
-					/*Lose state*/
-					console.log("You lose");
-					game.losses++;
-					game.isDone = true;
-					document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
-					document.getElementById("loss_counter").innerHTML = "Losses: " + game.losses;
-					return;
+			if(!isOldGuess){
+
+
+				for(var jj = 0; jj < game.solution.length; jj++){
+				
+					if(game.solution[jj] == userguess)
+					{
+						isGuessInSol = true;
+						game.displayedSolution[jj] = userguess;
+					}
 				}
-				
-				console.log("Update guessed letters");
-				
+
+				if(isGuessInSol){
+					game.displayedSolution[char_position] = userguess;
+					
+					/*check to see if word is complete*/
+					
+					if(game.displayedSolution.join('') === game.solution.toString()){
+						/*win state*/
+						game.wins++;
+						game.isDone = true;
+						document.getElementById("win_counter").innerHTML = "Wins: " + game.wins;
+						document.getElementById("solution").innerHTML = (game.displayedSolution.join('')).toUpperCase();
+						return;
+					}
+				}
+				else{ 
+					
+					game.incorrectGuesses.push(userguess);
+					game.guessRemain--;
+					if(game.guessRemain == 0){
+						/*Lose state*/
+						
+						game.losses++;
+						game.isDone = true;
+						document.getElementById("remaining_guesses").innerHTML =  "Guesses Remaining: " + game.guessRemain ;
+						document.getElementById("loss_counter").innerHTML = "Losses: " + game.losses;
+						return;
+					}
+					
+					
+				}
+				game.guessedLetters.push(userguess);
+				updateScreen();
+					
 			}
-			game.guessedLetters.push(userguess);
-			updateScreen();
-				
 		}
 	}
 };
