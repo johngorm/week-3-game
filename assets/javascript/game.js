@@ -77,6 +77,7 @@ updateScreen();
 
 document.onkeyup = function(event){
 	if(event.which >= 65 && event.which <= 90){
+		alert(event.which)
 		var userguess = event.key;
 		var char_position;
 		var isGuessInSol = false; 
